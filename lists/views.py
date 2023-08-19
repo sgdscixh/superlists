@@ -1,3 +1,4 @@
+""" views for lists app """
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
@@ -6,4 +7,4 @@ from django.http import HttpRequest, HttpResponse
 def home_page(request: HttpRequest) -> HttpResponse:
     """home page"""
 
-    return HttpResponse("<html><title>To-Do lists</title></html>")
+    return render(request, "home.html")

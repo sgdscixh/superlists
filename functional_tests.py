@@ -39,8 +39,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element_by_id("id_list_table")
-        rows = table.find_elements_by_tag_name("tr")
+        table = self.browser.find_element("id", "id_list_table")
+        rows = table.find_elements("tag name", "tr")
         self.assertTrue(any(row.text == "1: Buy peacock feathers" for row in rows))
 
         ## 页面中又显示了一个文本框,可以输入其他的代办事项
