@@ -20,7 +20,14 @@ class HomePageTest(TestCase):
         found = resolve("/")
         self.assertEqual(found.func, home_page)
 
-    # def test_uses_home_template(self):
-    #     """test home page"""
-    #     response = self.client.get("/")
-    #     self.assertTemplateUsed(response, "home.html")
+
+class HomePageTest2(TestCase):
+    """test home page use reverse"""
+
+    def test_root_url_reverse_to_home_page_view(self):
+        """test home page root url"""
+        from django.urls import reverse  # reverse name to url
+
+        home_url = reverse("home")
+        found = resolve(home_url)
+        self.assertEqual(found.func, home_page)
