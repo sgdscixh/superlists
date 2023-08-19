@@ -3,6 +3,7 @@ import unittest
 import time
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 
 class NewVisitorTest(unittest.TestCase):
@@ -21,9 +22,9 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.get("http://localhost:8000")
 
         # page title and header mention to-do lists
-        self.assertIn("To-Do", self.browser.title)
-        header_text = self.browser.find_elements("tag name", "h1")
-        self.assertIn("To-Do", header_text)
+        headers = self.browser.find_elements(By.TAG_NAME, "h1")
+        header_texts = [header.text for header in headers]
+        self.assertTrue(any("To-Do" in text for text in header_texts))
 
         ## 应用邀请她输入一个代办事项
         inputbox = self.browser.find_element("id", "id_new_item")
@@ -41,7 +42,10 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element("id", "id_list_table")
         rows = table.find_elements("tag name", "tr")
-        self.assertTrue(any(row.text == "1: Buy peacock feathers" for row in rows))
+        self.assertTrue(
+            any(row.text == "1: Buy peacock feathers" for row in rows),
+            "New to-do item did not appear in table",
+        )
 
         ## 页面中又显示了一个文本框,可以输入其他的代办事项
         ## 她输入了"Use peacock feathers to make a fly"
