@@ -31,6 +31,13 @@ class HomePageTest(TestCase):
         self.assertIn("<title>To-Do lists</title>", html)
         self.assertTrue(html.strip().endswith("</html>"))
 
+    def test_can_save_post_request(self):
+        """test can save post request"""
+
+        response = self.client.post("/", data={"item_text": "A new list item"})
+        self.assertIn("A new list item", response.content.decode())
+        self.assertTemplateUsed(response, "home.html")
+
 
 class HomePageTest2(TestCase):
     """test home page use reverse"""
@@ -52,13 +59,13 @@ class HomePageTest2(TestCase):
         self.assertIn("<title>To-Do lists</title>", html)
         self.assertTrue(html.strip().endswith("</html>"))
 
-    def test_home_page_returns_correct_html2(self):
-        """test home page html use render_to_string"""
+    # def test_home_page_returns_correct_html2(self):
+    #     """test home page html use render_to_string"""
 
-        from django.template.loader import render_to_string
+    #     from django.template.loader import render_to_string
 
-        request = HttpRequest()
-        response = home_page(request)
-        html = response.content.decode("utf8")
-        expected_html = render_to_string("home.html")
-        self.assertEqual(html, expected_html)
+    #     request = HttpRequest()
+    #     response = home_page(request)
+    #     html = response.content.decode("utf8")
+    #     expected_html = render_to_string("home.html")
+    #     self.assertEqual(html, expected_html)

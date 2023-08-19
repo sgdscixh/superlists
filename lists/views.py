@@ -7,4 +7,6 @@ from django.http import HttpRequest, HttpResponse
 def home_page(request: HttpRequest) -> HttpResponse:
     """home page"""
 
-    return render(request, "home.html")
+    return render(
+        request, "home.html", {"new_item_text": request.POST.get("item_text", "")}
+    )

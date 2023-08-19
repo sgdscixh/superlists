@@ -38,14 +38,11 @@ class NewVisitorTest(unittest.TestCase):
         ## 她按回车键后,页面更新了
         ## 代办事项表格中显示了"1: Buy peacock feathers"
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
 
+        time.sleep(1)
         table = self.browser.find_element("id", "id_list_table")
-        rows = table.find_elements("tag name", "tr")
-        self.assertTrue(
-            any(row.text == "1: Buy peacock feathers" for row in rows),
-            "New to-do item did not appear in table",
-        )
+        rows = table.find_elements(By.TAG_NAME, "tr")
+        self.assertIn("1: Buy peacock feathers", [row.text for row in rows])
 
         ## 页面中又显示了一个文本框,可以输入其他的代办事项
         ## 她输入了"Use peacock feathers to make a fly"
