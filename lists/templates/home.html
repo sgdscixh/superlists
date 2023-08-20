@@ -1,5 +1,4 @@
 <html>
-<<<<<<< refs/remotes/origin/main
   <head>
     <title>To-Do lists</title>
   </head>
@@ -15,13 +14,12 @@
     </form>
     <div>
       <table id="id_list_table">
+        {% for item in items %}
         <tr>
-          <td>1: {{new_item_text}}</td>
+          <td>{{forloop.counter}}: {{item.text}}</td>
         </tr>
+        {% endfor %}
       </table>
     </div>
   </body>
-=======
-  <title>To-Do lists</title>
->>>>>>> fix: refactor home page view to use a template
 </html>
