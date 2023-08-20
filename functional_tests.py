@@ -1,4 +1,5 @@
 """Module for functional tests."""
+
 import unittest
 import time
 from selenium.webdriver.common.keys import Keys
@@ -17,6 +18,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def check_for_row_in_list_table(self, row_text):
         """check for row in list table"""
+
         table = self.browser.find_element("id", "id_list_table")
         rows = table.find_elements("tag name", "tr")
         self.assertIn(row_text, [row.text for row in rows])
@@ -24,6 +26,7 @@ class NewVisitorTest(unittest.TestCase):
     # unittest 会运行所有以 test_ 开头的方法
     def test_can_start_a_list_and_retrieve_it_later(self):
         """test can start a list and retrieve it later"""
+
         # online to-do list
         self.browser.get("http://localhost:8000")
 
@@ -32,46 +35,45 @@ class NewVisitorTest(unittest.TestCase):
         header_texts = [header.text for header in headers]
         self.assertTrue(any("To-Do" in text for text in header_texts))
 
-        ## 应用邀请她输入一个代办事项
+        # 应用邀请她输入一个代办事项
         inputbox = self.browser.find_element("id", "id_new_item")
-        self.assertEqual(inputbox.get_attribute("placeholder"), "Enter a to-do item")
+        self.assertEqual(inputbox.get_attribute(
+            "placeholder"), "Enter a to-do item")
 
-        ## 她在一个文本框中输入了"Buy peacock feathers"
-        ## 她的爱好是使用假蝇做饵钓鱼
+        # 她在一个文本框中输入了"Buy peacock feathers"
+        # 她的爱好是使用假蝇做饵钓鱼
 
         inputbox.send_keys("Buy peacock feathers")
 
-        ## 她按回车键后,页面更新了
-        ## 代办事项表格中显示了"1: Buy peacock feathers"
+        # 她按回车键后,页面更新了
+        # 代办事项表格中显示了"1: Buy peacock feathers"
         inputbox.send_keys(Keys.ENTER)
 
-<<<<<<< refs/remotes/origin/main
         time.sleep(1)
-        self.check_for_row_in_list_table("1: Buy peacock feathers")
-=======
         table = self.browser.find_element("id", "id_list_table")
-        rows = table.find_elements("tag name", "tr")
-        self.assertTrue(any(row.text == "1: Buy peacock feathers" for row in rows))
->>>>>>> fix: refactor home page view to use a template
+        rows = table.find_elements(By.TAG_NAME, "td")
+        self.assertTrue(
+            any("1: Buy peacock feathers" in row.text for row in rows))
 
-        ## 页面中又显示了一个文本框,可以输入其他的代办事项
-        ## 她输入了"Use peacock feathers to make a fly"
-        ## 她做事很有条理
+        # 页面中又显示了一个文本框,可以输入其他的代办事项
+        # 她输入了"Use peacock feathers to make a fly"
+        # 她做事很有条理
         inputbox = self.browser.find_element("id", "id_new_item")
         inputbox.send_keys("Use peacock feathers to make a fly")
         inputbox.send_keys(Keys.ENTER)
 
         time.sleep(1)
-        ## 页面再次更新,她的清单中显示了这两个代办事项
+        # 页面再次更新,她的清单中显示了这两个代办事项
         self.check_for_row_in_list_table("1: Buy peacock feathers")
-        self.check_for_row_in_list_table("2: Use peacock feathers to make a fly")
-        ## 她想知道这个网站是否会记住她的清单
-        ## 她看到网站为她生成了一个唯一的URL
-        ## 而且页面中有一些文字解说这个功能
+        self.check_for_row_in_list_table(
+            "2: Use peacock feathers to make a fly")
+        # 她想知道这个网站是否会记住她的清单
+        # 她看到网站为她生成了一个唯一的URL
+        # 而且页面中有一些文字解说这个功能
 
-        ## 她访问那个URL,发现她的代办事项列表还在
+        # 她访问那个URL,发现她的代办事项列表还在
 
-        ## 她很满意,去睡觉了
+        # 她很满意,去睡觉了
 
 
 if __name__ == "__main__":
