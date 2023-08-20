@@ -45,8 +45,14 @@ class NewVisitorTest(unittest.TestCase):
         ## 代办事项表格中显示了"1: Buy peacock feathers"
         inputbox.send_keys(Keys.ENTER)
 
+<<<<<<< refs/remotes/origin/main
         time.sleep(1)
         self.check_for_row_in_list_table("1: Buy peacock feathers")
+=======
+        table = self.browser.find_element("id", "id_list_table")
+        rows = table.find_elements("tag name", "tr")
+        self.assertTrue(any(row.text == "1: Buy peacock feathers" for row in rows))
+>>>>>>> fix: refactor home page view to use a template
 
         ## 页面中又显示了一个文本框,可以输入其他的代办事项
         ## 她输入了"Use peacock feathers to make a fly"

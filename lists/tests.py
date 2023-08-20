@@ -23,6 +23,7 @@ class HomePageTest(TestCase):
         self.assertTrue(html.startswith("<html>"))
         self.assertIn("<title>To-Do lists</title>", html)
         self.assertTrue(html.strip().endswith("</html>"))
+<<<<<<< refs/remotes/origin/main
 
     def test_only_saves_items_when_necessary(self):
         """test only saves items when necessary"""
@@ -64,3 +65,15 @@ class ItemModelTest(TestCase):
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.text, "The first (ever) list item")
         self.assertEqual(second_saved_item.text, "Item the second")
+=======
+    def test_home_page_returns_correct_html2(self):
+        """test home page html use render_to_string"""
+
+        from django.template.loader import render_to_string
+
+        request = HttpRequest()
+        response = home_page(request)
+        html = response.content.decode("utf8")
+        expected_html = render_to_string("home.html")
+        self.assertEqual(html, expected_html)
+>>>>>>> fix: refactor home page view to use a template
