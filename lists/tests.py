@@ -10,19 +10,10 @@ from lists.models import Item
 class HomePageTest(TestCase):
     """test home page"""
 
-    def test_root_url_resolves_to_home_page_view(self):
-        """test home page root url"""
-        found = resolve("/")
-        self.assertEqual(found.func, home_page)
-
-    def test_home_page_returns_correct_html(self):
-        """test home page html use django client"""
-
+    def test_uses_home_template(self):
+        """test uses home template"""
         response = self.client.get("/")
-        html = response.content.decode("utf8")
-        self.assertTrue(html.startswith("<html>"))
-        self.assertIn("<title>To-Do lists</title>", html)
-        self.assertTrue(html.strip().endswith("</html>"))
+        self.assertTemplateUsed(response, "home.html")
 
     def test_only_saves_items_when_necessary(self):
         """test only saves items when necessary"""
@@ -43,16 +34,26 @@ class HomePageTest(TestCase):
 
         response = self.client.post("/", data={"item_text": "A new list item"})
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/")
+        self.assertEqual(response["location"], "/lists/the-only-list-in-the-world/")
 
-    def test_displays_muilt_list_items(self):
-        """mutiple list items"""
+
+class ListViewTest(TestCase):
+    """list view test"""
+
+    def test_uses_list_template(self):
+        """test uses list template"""
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+        self.assertTemplateUsed(response, "list.html")
+
+    def test_displays_all_items(self):
+        """displays all items"""
         Item.objects.create(text="itemey 1")
         Item.objects.create(text="itemey 2")
 
-        response = self.client.get("/")
-        self.assertIn("itemey 1", response.content.decode())
-        self.assertIn("itemey 2", response.content.decode())
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+
+        self.assertContains(response, "itemey 1")
+        self.assertContains(response, "itemey 2")
 
 
 class ItemModelTest(TestCase):
