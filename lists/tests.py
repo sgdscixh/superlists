@@ -4,6 +4,7 @@ from django.urls import resolve
 
 
 from lists.views import home_page
+from lists.views import new_list
 from lists.models import Item
 
 
@@ -19,22 +20,6 @@ class HomePageTest(TestCase):
         """test only saves items when necessary"""
         self.client.get("/")
         self.assertEqual(Item.objects.count(), 0)
-
-    def test_can_save_post_request(self):
-        """test can save post request"""
-
-        self.client.post("/", data={"item_text": "A new list item"})
-
-        self.assertEqual(Item.objects.count(), 1)
-        new_item = Item.objects.first()
-        self.assertEqual(new_item.text, "A new list item")
-
-    def test_redirects_after_post(self):
-        """test redirects after post"""
-
-        response = self.client.post("/", data={"item_text": "A new list item"})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/lists/the-only-list-in-the-world/")
 
 
 class ListViewTest(TestCase):
@@ -54,6 +39,25 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, "itemey 1")
         self.assertContains(response, "itemey 2")
+
+
+class NewListTest(TestCase):
+    """test new list"""
+
+    def test_can_save_post_request(self):
+        """test can save post request"""
+
+        self.client.post("/lists/new", data={"item_text": "A new list item"})
+
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, "A new list item")
+
+    def test_redirects_after_post(self):
+        """test redirects after post"""
+
+        response = self.client.post("/lists/new", data={"item_text": "A new list item"})
+        self.assertRedirects(response, "/lists/the-only-list-in-the-world/")
 
 
 class ItemModelTest(TestCase):
